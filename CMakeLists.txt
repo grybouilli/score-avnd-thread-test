@@ -20,7 +20,6 @@ avnd_score_plugin_add(
     ThreadTest/ThreadTest.hpp
     ThreadTest/ThreadTestModel.hpp
     ThreadTest/ThreadTestModel.cpp
-    ThreadTest/ThreadTestUi.hpp
   TARGET threadtest
   MAIN_CLASS ThreadTest
   NAMESPACE Example

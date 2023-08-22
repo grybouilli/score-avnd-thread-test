@@ -1,7 +1,7 @@
 {
   "src": "<url to the .zip file created by the release script>",
-  "name": "My Avnd Effect",
-  "raw_name": "score-addon-my-avnd-effect",
+  "name": "Thread Test",
+  "raw_name": "score-addon-thread-test",
   "version": "1.0",
   "kind": "addon",
   "short": "Test audio effect add-on",
