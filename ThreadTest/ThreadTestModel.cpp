@@ -21,7 +21,7 @@ void ThreadTest::ins::launcher2_t::update(ThreadTest& obj)
     std::cerr << obj.internal_string << std::endl;
 }
 
-std::function<void(ThreadTest&)> ThreadTest::worker::work(int x, std::string foo)
+std::function<void(ThreadTest&)> ThreadTest::worker_t::work(int x, std::string foo)
 {
   // 3. Implement the "threaded" work part:
   // This is executed in a separate worker thread, slow operations can be done here 

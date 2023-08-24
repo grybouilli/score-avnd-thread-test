@@ -43,7 +43,7 @@ namespace Example
             halp::dynamic_audio_bus<"Output", double> audio;
         } outputs;
 
-        struct worker
+        struct
         {
             // Called from DSP thread
             std::function<void(int, std::string)> request;
