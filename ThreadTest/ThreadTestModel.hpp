@@ -4,6 +4,10 @@
 #include <halp/controls.hpp>
 #include <halp/meta.hpp>
 
+#include <memory>
+
+#include "PythonEnvModel.hpp"
+
 namespace Example
 {
 
@@ -15,27 +19,25 @@ namespace Example
         halp_meta(c_name, "threadtest")
         halp_meta(uuid, "fb4c5ebb-5961-4856-9434-3ca6e8761448")
 
-        // Define inputs and outputs ports.
-        // See the docs at https://github.com/celtera/avendish
+        ThreadTest(): to_python_env{std::make_shared<python_env>()}{}
+
+        std::shared_ptr<python_env> to_python_env;
+
         struct ins
         {
             halp::dynamic_audio_bus<"Input", double> audio;
 
             struct {
                 enum widget { pushbutton };
-                halp_meta(name, "Launch worker1")
-                    void update(ThreadTest& obj);
+                halp_meta(name, "Execute python code")
                 bool value;
             } launcher1;
             using launcher1_t = decltype(launcher1);
 
-            struct {
-                enum widget { pushbutton };
-                halp_meta(name, "Launch worker2")
-                    void update(ThreadTest& obj);
-                bool value;
-            } launcher2;
-            using launcher2_t = decltype(launcher2);
+            struct : halp::lineedit<"Program", "">
+            {
+                halp_meta(language, "Python")
+            } program;
         } inputs;
 
         struct
@@ -43,19 +45,17 @@ namespace Example
             halp::dynamic_audio_bus<"Output", double> audio;
         } outputs;
 
-        struct
+        struct 
         {
             // Called from DSP thread
-            std::function<void(int, std::string)> request;
+            std::function<void(std::shared_ptr<python_env>, std::string)> request;
 
             // "work" is called from a worker thread
-            static std::function<void(ThreadTest&)> work(int, std::string);
+            static std::function<void(ThreadTest&)> work(std::shared_ptr<python_env>, std::string);
 
             // The std::function object returned by work is called from the DSP thread
         } worker;
         using worker_t = decltype(worker);
-
-        std::string internal_string;
 
         using setup = halp::setup;
         void prepare(halp::setup info)
